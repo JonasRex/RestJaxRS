@@ -3,6 +3,7 @@ package facades;
 import dtos.PersonDTO;
 import entities.Person;
 
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -24,11 +25,7 @@ public class PersonFacade implements IPersonFacade{
     private PersonFacade() {}
     
     
-    /**
-     * 
-     * @param _emf
-     * @return an instance of this facade class.
-     */
+
     public static PersonFacade getFacadeExample(EntityManagerFactory _emf) {
         if (instance == null) {
             emf = _emf;
@@ -58,8 +55,7 @@ public class PersonFacade implements IPersonFacade{
     public long getPersonCount(){
         EntityManager em = getEntityManager();
         try{
-            long personCount = (long)em.createQuery("SELECT COUNT(p) FROM Person p").getSingleResult();
-            return personCount;
+            return (long)em.createQuery("SELECT COUNT(p) FROM Person p").getSingleResult();
         }finally{  
             em.close();
         }
@@ -70,7 +66,7 @@ public class PersonFacade implements IPersonFacade{
     public static void main(String[] args) {
         emf = EMF_Creator.createEntityManagerFactory();
         PersonFacade fe = getFacadeExample(emf);
-        fe.getAllPersons().forEach(dto->System.out.println(dto));
+        fe.getAllPersons().forEach(System.out::println);
     }
 
     @Override
@@ -92,7 +88,21 @@ public class PersonFacade implements IPersonFacade{
 
     @Override
     public PersonDTO deletePerson(long id) {
-        return null;
+        EntityManager em = emf.createEntityManager();
+        try {
+            Person p = em.find(Person.class, id);
+            em.getTransaction().begin();
+
+            if(p != null){
+                em.remove(p);
+                em.getTransaction().commit();
+            } else {
+                return null;
+            }
+            return new PersonDTO(p);
+        } finally {
+            em.close();
+        }
     }
 
 
@@ -113,13 +123,35 @@ public class PersonFacade implements IPersonFacade{
     @Override
     public List<PersonDTO> getAllPersons() {
         EntityManager em = emf.createEntityManager();
-        TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p", Person.class);
-        List<Person> persons = query.getResultList();
-        return PersonDTO.getDtos(persons);
+        try {
+            TypedQuery<Person> query = em.createQuery("SELECT p FROM Person p", Person.class);
+            List<Person> persons = query.getResultList();
+            return PersonDTO.getDtos(persons);
+        } finally {
+            em.close();
+        }
     }
 
     @Override
     public PersonDTO editPerson(PersonDTO p) {
-        return null;
+        EntityManager em = emf.createEntityManager();
+        try {
+            em.getTransaction().begin();
+
+            Person person = em.find(Person.class, p.getId());
+            person.setFirstName(p.getfName());
+            person.setLastName(p.getlName());
+            person.setPhone(p.getPhone());
+            person.setLastEdited(new Date());
+            em.getTransaction().commit();
+            return p;
+        } finally {
+            em.close();
+
+        }
     }
+
+
+
+
 }

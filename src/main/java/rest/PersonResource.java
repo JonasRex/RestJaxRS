@@ -3,12 +3,14 @@ package rest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dtos.PersonDTO;
+import entities.Person;
 import utils.EMF_Creator;
 import facades.PersonFacade;
 import javax.persistence.EntityManagerFactory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 //Todo Remove or change relevant parts before ACTUAL use
 @Path("person")
@@ -49,4 +51,33 @@ public class PersonResource {
                 .entity(GSON.toJson(FACADE.addPerson(addMovieDTO)))
                 .build();
     }
+
+    @GET
+    @Path("/all")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response getAllPersons() {
+        List<PersonDTO> movies = FACADE.getAllPersons();
+
+
+        return Response.ok().entity(GSON.toJson(movies)).build();
+    }
+
+    @DELETE
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response deletePersonById(@PathParam("id") long id) {
+        PersonDTO pDTO = FACADE.deletePerson(id);
+        return Response.ok().entity(GSON.toJson(pDTO)).build();
+    }
+
+    @PUT
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updatePersonByContext(String jsonContext, @PathParam("id") long id) {
+        PersonDTO personToBeChanged = GSON.fromJson(jsonContext, PersonDTO.class);
+        return Response.ok().entity(GSON.toJson(FACADE.editPerson(personToBeChanged))).build();
+    }
+
 }

@@ -2,7 +2,11 @@ POST https://rexdanorum.dk/restjax/api/person
 Content-Type: application/json
 
 {
-  "fname": "Jonas",
-  "lname": "Hansen",
+  "fName": "Jonas",
+  "lName": "Hansen",
   "phone": "24403013"
 }
+
+###
+
+DELETE https://rexdanorum.dk/restjax/api/person/1
