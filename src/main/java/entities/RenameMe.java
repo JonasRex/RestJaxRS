@@ -18,8 +18,10 @@ public class RenameMe implements Serializable {
     private Long id;
     
     public RenameMe() {
+
     }  
-    
+
+
     // TODO, delete this class, or rename to an Entity class that makes sense for what you are about to do
     // Delete EVERYTHING below if you decide to use this class, it's dummy data used for the initial demo
     private String dummyStr1;
