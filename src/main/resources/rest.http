@@ -10,3 +10,14 @@ Content-Type: application/json
 ###
 
 DELETE https://rexdanorum.dk/restjax/api/person/1
+
+###
+
+PUT https://rexdanorum.dk/restjax/api/person/1
+Content-Type: application/json
+
+{
+  "fName": "Lars",
+  "lName": "Olsen",
+  "phone": "78451263"
+}

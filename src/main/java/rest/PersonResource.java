@@ -77,7 +77,11 @@ public class PersonResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updatePersonByContext(String jsonContext, @PathParam("id") long id) {
         PersonDTO personToBeChanged = GSON.fromJson(jsonContext, PersonDTO.class);
-        return Response.ok().entity(GSON.toJson(FACADE.editPerson(personToBeChanged))).build();
+        personToBeChanged.setId(id);
+        PersonDTO updated = FACADE.editPerson(personToBeChanged);
+        return Response.ok().entity(GSON.toJson(updated)).build();
     }
+
+
 
 }

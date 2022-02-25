@@ -132,26 +132,24 @@ public class PersonFacade implements IPersonFacade{
         }
     }
 
+
     @Override
     public PersonDTO editPerson(PersonDTO p) {
+        if (p.getId() == 0)
+            throw new IllegalArgumentException("No Parent can be updated when id is missing");
+
         EntityManager em = emf.createEntityManager();
-        try {
+
             em.getTransaction().begin();
 
             Person person = em.find(Person.class, p.getId());
             person.setFirstName(p.getfName());
             person.setLastName(p.getlName());
             person.setPhone(p.getPhone());
-         //   person.setLastEdited(new Date());
+            em.merge(person);
+
             em.getTransaction().commit();
             return p;
-        } finally {
-            em.close();
 
-        }
     }
-
-
-
-
 }
