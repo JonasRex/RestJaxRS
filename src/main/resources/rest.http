@@ -2,9 +2,9 @@ POST https://rexdanorum.dk/restjax/api/person
 Content-Type: application/json
 
 {
-  "fName": "Jonas",
-  "lName": "Hansen",
-  "phone": "24403013"
+  "fName": "Jens",
+  "lName": "Madsen",
+  "phone": "12345678"
 }
 
 ###
@@ -13,11 +13,15 @@ DELETE https://rexdanorum.dk/restjax/api/person/1
 
 ###
 
-PUT https://rexdanorum.dk/restjax/api/person/1
+PUT https://rexdanorum.dk/restjax/api/person/3
 Content-Type: application/json
 
 {
-  "fName": "Lars",
+  "fName": "Helle",
   "lName": "Olsen",
-  "phone": "78451263"
+  "phone": "12451263"
 }
+
+###
+
+GET https://rexdanorum.dk/restjax/api/person/all
