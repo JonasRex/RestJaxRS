@@ -10,6 +10,7 @@ public interface IPersonFacade {
     public PersonDTO getPerson(long id);
     public List<PersonDTO> getAllPersons();
     public PersonDTO editPerson(PersonDTO p);
+
 }
 
 

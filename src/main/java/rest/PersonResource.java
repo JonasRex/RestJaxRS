@@ -62,6 +62,16 @@ public class PersonResource {
         return Response.ok().entity(GSON.toJson(movies)).build();
     }
 
+    @GET
+    @Path("/{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response getPersonById(@PathParam("id") long id) {
+        PersonDTO movie = FACADE.getPerson(id);
+
+
+        return Response.ok().entity(GSON.toJson(movie)).build();
+    }
+
     @DELETE
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
